@@ -1,0 +1,13 @@
+# tidak ikut commit
+__pycache__/
+*.pyc
+.venv/
+
+# kredensial & sesi - jangan pernah commit
+.env
+*.env
+simlinmas/session.json
+
+# data pribadi anggota (hasil export aplikasi & lampiran)
+linmas-*.xlsx
+berkas/

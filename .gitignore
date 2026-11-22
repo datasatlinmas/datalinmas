@@ -1,0 +1,20 @@
+# Secrets / local config
+.env
+*.env
+**/rclone.conf
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+
+# Runtime data/logs (opsional)
+bulklinmas/sinkron_semua.log
+bulklinmas/.sinkron_semua_state.json
+bulklinmas/.sinkron_drive_state.json
+bulklinmas/bulk-simlinmas-ponorogo-siap-*.xlsx
+
+# Data lampiran besar
+DATA SATLINMAS PONOROGO/**
+!DATA SATLINMAS PONOROGO/.gitkeep
+!DATA SATLINMAS PONOROGO/Rekap Pendataan Satlinmas - Kabupaten Ponorogo (Utama).xlsx
