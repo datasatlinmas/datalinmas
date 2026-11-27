@@ -13,7 +13,7 @@ jobs:
       SIMLINMAS_EMAIL: ${{ secrets.SIMLINMAS_EMAIL }}
       SIMLINMAS_PASSWORD: ${{ secrets.SIMLINMAS_PASSWORD }}
       SIMLINMAS_PASSWORD_ANGGOTA: ${{ secrets.SIMLINMAS_PASSWORD_ANGGOTA }}
-      SIMLINMAS_RELAY_URL: https://satpolpp.ponorogo.go.id/satlinmas/proxy/sinkron_proxy.php
+      SIMLINMAS_RELAY_URL: ${{ secrets.SIMLINMAS_RELAY_URL }}
       SIMLINMAS_RELAY_TOKEN: ${{ secrets.SIMLINMAS_RELAY_TOKEN }}
     steps:
       - uses: actions/checkout@v4
