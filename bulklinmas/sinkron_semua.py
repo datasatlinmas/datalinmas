@@ -2764,10 +2764,18 @@ def main(argv: list[str] | None = None) -> int:
             remote = pilih_remote(args.remote)
             cek_koneksi(remote)
             baik(f"Koneksi Google Drive ({remote}) aman!")
-            if BulkSesi:
+            if relay_enabled():
+                ok, resp = coba_ulang(lambda: _relay_multipart("ping", timeout=120), percobaan=3, jeda_awal=3, nama="relay ping")
+                if not ok or not isinstance(resp, dict) or not resp.get("ok"):
+                    pesan = resp.get("message") if isinstance(resp, dict) else str(resp)
+                    raise RuntimeError(f"Koneksi relay SIMLINMAS gagal: {pesan}")
+                baik(f"Koneksi relay SIMLINMAS aman: {resp.get('message', 'OK')}")
+            elif BulkSesi:
                 sesi = BulkSesi(EMAIL_OPERATOR, PASSWORD_OPERATOR).masuk()
                 api = BulkSimLinmas(sesi)
                 baik(f"Koneksi SIMLINMAS aman! Total anggota: {api.jumlah_member()}")
+            else:
+                catat("Cek SIMLINMAS dilewati: relay tidak aktif dan modul direct tidak tersedia.")
             return 0
         if args.perintah == "bersihkan":
             bersihkan_sampah(kering=False)
