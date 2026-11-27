@@ -20,5 +20,20 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - run: python -m pip install --upgrade pip openpyxl pillow
+      - name: Install system deps
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y rclone
+      - name: Install Python deps
+        run: python -m pip install --upgrade pip openpyxl pillow curl_cffi
+      - name: Restore rclone config
+        env:
+          RCLONE_CONFIG: ${{ secrets.RCLONE_CONFIG }}
+        run: |
+          if [ -z "$RCLONE_CONFIG" ]; then
+            echo "RCLONE_CONFIG secret belum diisi"; exit 1
+          fi
+          mkdir -p ~/.config/rclone
+          printf '%s' "$RCLONE_CONFIG" > ~/.config/rclone/rclone.conf
+          chmod 600 ~/.config/rclone/rclone.conf
       - run: python bulklinmas/sinkron_semua.py cek
