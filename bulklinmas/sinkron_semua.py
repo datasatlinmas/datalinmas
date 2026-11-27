@@ -57,10 +57,14 @@ MASTER_EXCEL = DATA_DIR / "DATA MASTER REKAPITULASI SATLINMAS SE-KABUPATEN PONOR
 STATE_PATH = HERE / ".sinkron_semua_state.json"
 LOG_FILE = HERE / "sinkron_semua.log"
 
-EMAIL_OPERATOR = os.environ.get("SIMLINMAS_EMAIL", "admin.kabupaten-ponorogo@gmail.com")
-PASSWORD_OPERATOR = os.environ.get("SIMLINMAS_PASSWORD", "123456")
-PASSWORD_ANGGOTA = os.environ.get("SIMLINMAS_PASSWORD_ANGGOTA", "Ponorogo2026!")
-RELAY_URL = os.environ.get("SIMLINMAS_RELAY_URL", "").strip()
+EMAIL_OPERATOR = os.environ.get("SIMLINMAS_EMAIL", "").strip()
+PASSWORD_OPERATOR = os.environ.get("SIMLINMAS_PASSWORD", "").strip()
+PASSWORD_ANGGOTA = os.environ.get("SIMLINMAS_PASSWORD_ANGGOTA", "").strip()
+# Routing relay melalui proxy publik Satlinmas; dapat dioverride lewat .env.
+RELAY_URL = (
+    os.environ.get("SIMLINMAS_RELAY_URL", "").strip()
+    or "https://satpolpp.ponorogo.go.id/satlinmas/proxy/sinkron_proxy.php"
+)
 RELAY_TOKEN = os.environ.get("SIMLINMAS_RELAY_TOKEN", "").strip()
 
 PROVINSI_NAMA = "JAWA TIMUR"
@@ -2736,6 +2740,8 @@ def buat_parser() -> argparse.ArgumentParser:
 
 def main(argv: list[str] | None = None) -> int:
     args = buat_parser().parse_args(argv)
+    if args.perintah in {"all", "perbarui", "upload", "cek"} and not RELAY_TOKEN:
+        raise RuntimeError("SIMLINMAS_RELAY_TOKEN wajib diatur lewat environment/.env lokal atau GitHub Secret.")
     rekap = Path(args.rekap)
 
     try:

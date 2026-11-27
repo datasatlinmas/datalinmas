@@ -9,5 +9,4 @@ __pycache__/
 simlinmas/session.json
 
 # data pribadi anggota (hasil export aplikasi & lampiran)
-linmas-*.xlsx
 berkas/
